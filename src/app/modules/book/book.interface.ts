@@ -13,3 +13,11 @@ export type IBook = {
 } & Document
 
 export default IBook
+
+export type IBookFilters = {
+  searchTerm?: string
+  title?: string
+  author?: string
+  genre?: string
+  publication_date?: Date
+}
