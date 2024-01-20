@@ -12,7 +12,23 @@ import { User } from "../user/user.model"
 import { IUser } from "../user/user.interface"
 
 const signUpUser = async (UserData: IUser) => {
+  if (!UserData?.password || !UserData?.email) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Please provide both email and password"
+    )
+  }
+  const isUserExist = await User.isUserExist(UserData?.email)
+
+  if (isUserExist?.email) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User with the email is already exist"
+    )
+  }
+
   const newUser = await User.create(UserData)
+
   return newUser
 }
 
@@ -22,7 +38,10 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const isUserExist = await User.isUserExist(email)
 
   if (!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist")
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "User does not exist, please sign-up first"
+    )
   }
 
   if (

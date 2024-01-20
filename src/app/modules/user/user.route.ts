@@ -7,7 +7,7 @@ const router = express.Router()
 // router.post("/create-book", userController.createUser)
 
 // Get all Users
-router.get("/get-all-Users", UserController.getAllUsers)
+router.get("/get-all-users", UserController.getAllUsers)
 
 // Get a single User by ID
 router.get("/:id", UserController.getUserById)
