@@ -32,7 +32,12 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     httpOnly: true,
   }
 
+  // Send the access token as cookie
   res.cookie("refreshToken", refreshToken, cookieOptions)
+  // res.cookie('loggedIn', true, {
+  //   ...cookieOptions,
+  //   httpOnly: false,
+  // });
 
   sendResponse<ILoginUserResponse>(res, {
     statusCode: 200,
