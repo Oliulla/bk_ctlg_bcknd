@@ -47,6 +47,24 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const logOutUser = catchAsync(async (req: Request, res: Response) => {
+  // set refresh token into cookie
+  const cookieOptions = {
+    secure: config.env === "production",
+    httpOnly: false,
+  }
+
+  // Send the access token as cookie
+  res.cookie("book-ctlg-refreshToken", "", cookieOptions)
+
+  sendResponse<ILoginUserResponse>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Successfully Logged-out!",
+    data: null,
+  })
+})
+
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies
 
@@ -71,5 +89,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 export const AuthController = {
   signUpUser,
   loginUser,
+  logOutUser,
   refreshToken,
 }
