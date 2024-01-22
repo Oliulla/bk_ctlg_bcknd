@@ -36,6 +36,21 @@ const insertReview: RequestHandler = catchAsync(
   }
 )
 
+const pushReaderInWishlist: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { bookId, readerEmail } = req.params
+    // console.log(bookId, readerEmail)
+    const result = await bookService.pushReaderInWishlist(bookId, readerEmail)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Successfully added in wishlist!",
+      data: result,
+    })
+  }
+)
+
 const getAllBooks: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, bookFilterableFields)
@@ -98,6 +113,7 @@ const deleteBookById: RequestHandler = catchAsync(
 export const bookController = {
   createBook,
   insertReview,
+  pushReaderInWishlist,
 
   getAllBooks,
   getBookById,

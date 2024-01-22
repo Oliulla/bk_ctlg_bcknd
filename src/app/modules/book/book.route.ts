@@ -9,6 +9,12 @@ router.post("/create-book", bookController.createBook)
 // Insert review for a book
 router.post("/:bookId", bookController.insertReview)
 
+// Push reader in wishlist
+router.post(
+  "/wishlist/:bookId&:readerEmail",
+  bookController.pushReaderInWishlist
+)
+
 // Get all books
 router.get("/get-all-books", bookController.getAllBooks)
 

@@ -35,6 +35,36 @@ const insertReview = async (id: string, reviewData: Review) => {
   }
 }
 
+const pushReaderInWishlist = async (bookId: string, readerEmail: string) => {
+  const book = await BookModel.findById(bookId)
+
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Book not found with the given ID")
+  }
+
+  const userWishlistCheck = await BookModel.find({
+    "wishlist.reader_email": { $eq: readerEmail },
+  })
+
+  // console.log("userwish", userWishlistCheck)
+
+  if (userWishlistCheck.length > 0) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You already added this book in wishlist"
+    )
+  }
+
+  // Book not found, so let's add it to the wishlist
+  await BookModel.updateOne(
+    { _id: book._id },
+    { $push: { wishlist: { reader_email: readerEmail } } }
+  )
+
+  // console.log(updatedBook)
+  return book
+}
+
 const getAllBooks = async (
   filters: IBookFilters,
   paginationOptions: IPaginationOptions
@@ -117,6 +147,7 @@ const deleteBookById = async (bookId: string) => {
 export const bookService = {
   createBook,
   insertReview,
+  pushReaderInWishlist,
 
   getAllBooks,
   getBookById,

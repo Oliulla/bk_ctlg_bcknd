@@ -1,10 +1,19 @@
 import mongoose, { Schema, Model } from "mongoose"
 import { Document } from "mongoose"
-import { IBook } from "./book.interface"
+import { IBook, Status } from "./book.interface"
 
 const reviewSchema = new Schema({
-  user_email: { type: String, requuired: true },
+  user_email: { type: String, required: true },
   comment: { type: String, required: true },
+})
+
+const wishlistReaderSchema = new Schema({
+  reader_email: { type: String, required: true },
+})
+
+const readingStatusSchema = new Schema({
+  reader_email: { type: String, required: true },
+  status: { type: String, enum: Status, required: true },
 })
 
 const bookSchema: Schema = new Schema(
@@ -15,6 +24,8 @@ const bookSchema: Schema = new Schema(
     publication_date: { type: Date, required: true },
     reviews: [reviewSchema],
     user_email: { type: String, required: true },
+    wishlist: [wishlistReaderSchema],
+    reading_status: [readingStatusSchema],
   },
   {
     timestamps: true,
