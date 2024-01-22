@@ -14,21 +14,21 @@ const getAllUsers = async () => {
 //   return newUser
 // }
 
-const getUserById = async (UserId: string) => {
-  const user = await User.findById(UserId)
+const getUserByEmail = async (UserEmail: string) => {
+  const user = await User.findById(UserEmail)
   return user
 }
-const updateUserById = async (
-  UserId: string,
+const updateUserByEmail = async (
+  UserEmail: string,
   updateUserData: Partial<IUser>
 ) => {
-  const updatedUser = await User.findByIdAndUpdate(UserId, updateUserData, {
+  const updatedUser = await User.findByIdAndUpdate(UserEmail, updateUserData, {
     new: true,
   })
   return updatedUser
 }
-const deleteUserById = async (UserId: string) => {
-  const deletedUser = await User.findByIdAndRemove(UserId)
+const deleteUserByEmail = async (UserEmail: string) => {
+  const deletedUser = await User.findByIdAndRemove(UserEmail)
   if (!deletedUser) {
     throw new ApiError(httpStatus.NOT_FOUND, "Not Found!!!")
   }
@@ -38,7 +38,7 @@ const deleteUserById = async (UserId: string) => {
 export const UserService = {
   // createUser,
   getAllUsers,
-  getUserById,
-  updateUserById,
-  deleteUserById,
+  getUserByEmail,
+  updateUserByEmail,
+  deleteUserByEmail,
 }

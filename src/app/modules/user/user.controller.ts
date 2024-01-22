@@ -31,10 +31,10 @@ const getAllUsers: RequestHandler = catchAsync(
   }
 )
 
-const getUserById: RequestHandler = catchAsync(
+const getUserByEmail: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const UserId = req.params.id
-    const result = await UserService.getUserById(UserId)
+    const UserEmail = req.params.email
+    const result = await UserService.getUserByEmail(UserEmail)
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -45,11 +45,14 @@ const getUserById: RequestHandler = catchAsync(
   }
 )
 
-const updateUserById: RequestHandler = catchAsync(
+const updateUserByEmail: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const UserId = req.params.id
+    const UserEmail = req.params.email
     const updateUserData = req.body
-    const result = await UserService.updateUserById(UserId, updateUserData)
+    const result = await UserService.updateUserByEmail(
+      UserEmail,
+      updateUserData
+    )
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -59,10 +62,10 @@ const updateUserById: RequestHandler = catchAsync(
     })
   }
 )
-const deleteUserById: RequestHandler = catchAsync(
+const deleteUserByEmail: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const UserId = req.params.id
-    const result = await UserService.deleteUserById(UserId)
+    const UserEmail = req.params.email
+    const result = await UserService.deleteUserByEmail(UserEmail)
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -76,7 +79,7 @@ const deleteUserById: RequestHandler = catchAsync(
 export const UserController = {
   //   createUser,
   getAllUsers,
-  getUserById,
-  updateUserById,
-  deleteUserById,
+  getUserByEmail,
+  updateUserByEmail,
+  deleteUserByEmail,
 }
