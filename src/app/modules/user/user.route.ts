@@ -10,12 +10,12 @@ const router = express.Router()
 router.get("/get-all-users", UserController.getAllUsers)
 
 // Get a single User by ID
-router.get("/:id", UserController.getUserByEmail)
+router.get("/:email", UserController.getUserByEmail)
 
 // // Update a User by ID
-router.patch("/:id", UserController.updateUserByEmail)
+router.patch("/:email", UserController.updateUserByEmail)
 
 // // Delete a User by ID
-router.delete("/:id", UserController.deleteUserByEmail)
+router.delete("/:email", UserController.deleteUserByEmail)
 
 export default router
