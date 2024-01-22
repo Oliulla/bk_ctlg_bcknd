@@ -3,7 +3,7 @@ import { Document } from "mongoose"
 import { IBook } from "./book.interface"
 
 const reviewSchema = new Schema({
-  user_id: { type: String, requuired: true },
+  user_email: { type: String, requuired: true },
   comment: { type: String, required: true },
 })
 
@@ -14,7 +14,7 @@ const bookSchema: Schema = new Schema(
     genre: { type: String, required: true },
     publication_date: { type: Date, required: true },
     reviews: [reviewSchema],
-    user_id: { type: String, required: true },
+    user_email: { type: String, required: true },
   },
   {
     timestamps: true,

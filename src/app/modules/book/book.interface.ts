@@ -1,7 +1,7 @@
 import { Document, ObjectId } from "mongoose"
 
 type Review = {
-  user_id: string
+  user_email: string
   comment: string
 }
 
@@ -11,7 +11,7 @@ export type IBook = {
   genre: string
   publication_date: Date
   reviews?: Review[]
-  user_id: string
+  user_email: string
 } & Document
 
 export default IBook
