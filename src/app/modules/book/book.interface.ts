@@ -1,6 +1,6 @@
 import { Document, ObjectId } from "mongoose"
 
-type Review = {
+export type Review = {
   user_email: string
   comment: string
 }

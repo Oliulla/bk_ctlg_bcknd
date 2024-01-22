@@ -1,6 +1,6 @@
 import httpStatus from "http-status"
 import ApiError from "../../../errors/ApiError"
-import IBook, { IBookFilters } from "./book.interface"
+import IBook, { IBookFilters, Review } from "./book.interface"
 import BookModel from "./book.model"
 import { IPaginationOptions } from "../../interfaces/pagination"
 import { paginationHelper } from "../../../helpers/paginationHelper"
@@ -10,6 +10,29 @@ import { SortOrder } from "mongoose"
 const createBook = async (bookData: IBook) => {
   const newBook = await BookModel.create(bookData)
   return newBook
+}
+
+const insertReview = async (id: string, reviewData: Review) => {
+  try {
+    const book = await BookModel.findById(id)
+
+    if (!book) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Book not found")
+    }
+
+    // Use nullish coalescing operator to handle 'undefined'
+    book.reviews = book.reviews ?? []
+    book.reviews.push(reviewData)
+
+    const updatedBook = await book.save()
+
+    return updatedBook
+  } catch (error) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error"
+    )
+  }
 }
 
 const getAllBooks = async (
@@ -93,6 +116,8 @@ const deleteBookById = async (bookId: string) => {
 
 export const bookService = {
   createBook,
+  insertReview,
+
   getAllBooks,
   getBookById,
   updateBookById,

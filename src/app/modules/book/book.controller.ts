@@ -21,6 +21,21 @@ const createBook: RequestHandler = catchAsync(
   }
 )
 
+const insertReview: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.bookId
+    const reviewData = req.body
+    const result = await bookService.insertReview(id, reviewData)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Successfully created review!",
+      data: result,
+    })
+  }
+)
+
 const getAllBooks: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, bookFilterableFields)
@@ -82,6 +97,8 @@ const deleteBookById: RequestHandler = catchAsync(
 
 export const bookController = {
   createBook,
+  insertReview,
+
   getAllBooks,
   getBookById,
   updateBookById,

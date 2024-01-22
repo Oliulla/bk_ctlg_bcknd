@@ -6,6 +6,9 @@ const router = express.Router()
 // Create a new book
 router.post("/create-book", bookController.createBook)
 
+// Insert review for a book
+router.post("/:bookId", bookController.insertReview)
+
 // Get all books
 router.get("/get-all-books", bookController.getAllBooks)
 
