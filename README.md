@@ -1,23 +1,62 @@
-# Book Catalog Backend Built with
-```plaintext
-* Backend Architecture
-Node + Express + NPMs
-* For Authentications
-JWT
-* For DBMS
-Mongoose + MongoDB
-```
+# Live URL: [https://book-ctlg-srvr.vercel.app]
 
-## To Run Local Server, First need
-```bash
-npm install
-or
-yarn install
-```
+# Book Catalog Backend
 
-## Then Run Command
-```bash
-npm run dev
-or
-yarn dev
-```
+This is the backend of the Book Catalog project, responsible for managing book data and providing an API for frontend interactions.
+
+## Technologies Used
+
+- **Backend Architecture:**
+
+  - Node.js
+  - Express.js
+  - Mongoose (MongoDB ORM)
+
+- **Authentication:**
+
+  - JWT (JSON Web Tokens)
+
+- **Database:**
+  - MongoDB with Mongoose
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed on your machine:
+
+- Node.js
+- npm or yarn
+- MongoDB
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Oliulla/bk_ctlg_bcknd.git
+   cd book-catalog-backend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install (Recommended)
+   ```
+
+3. Set up environmental variables:
+   Create a .env file in the root directory and define the following variables:
+
+   ```bash
+   Follow .env.example
+   ```
+
+4. Start the local development server:
+
+   ```bash
+    npm run dev
+    # or
+    yarn dev (Recommended)
+   ```
