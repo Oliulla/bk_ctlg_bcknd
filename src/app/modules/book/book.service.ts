@@ -87,51 +87,56 @@ const changeBookStatus = async (
   const book = await BookModel.findById(bookId)
 
   if (!book) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Book not found with the given ID")
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "Book not found with the given book id!!!"
+    )
   }
 
   // Check if the user has already added the book with the requested status
-  const userStatusCheck = await BookModel.findOne({
-    _id: bookId,
-    "reading_status.reader_email": readerEmail,
-    "reading_status.status": status,
-  })
-
-  if (userStatusCheck) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "You already added this status!!!"
-    )
-  }
-
-  // Check if the user has added the book to the wishlist
-  const userWishlistCheck = await BookModel.findOne({
-    _id: bookId,
-    "wishlist.reader_email": readerEmail,
-  })
-
-  if (!userWishlistCheck) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "You have to add the book to the wishlist first!!!"
-    )
-  }
-
-  // Remove user from wishlist
-  await BookModel.updateOne(
-    { _id: bookId },
-    { $pull: { wishlist: { reader_email: readerEmail } } }
-  )
-
-  // Update user's reading status
-  await BookModel.updateOne(
-    { _id: book._id },
+  const userStatusCheck = await BookModel.findOneAndUpdate(
     {
-      $push: {
-        reading_status: { reader_email: readerEmail, status: status },
+      _id: bookId,
+      "reading_status.reader_email": readerEmail,
+    },
+    {
+      $set: {
+        "reading_status.$.status": status,
       },
-    }
+    },
+    { new: true }
   )
+
+  if (!userStatusCheck) {
+    // If the user hasn't added the book with the requested status, check if the user has added the book to the wishlist
+    const userWishlistCheck = await BookModel.findOne({
+      _id: bookId,
+      "wishlist.reader_email": readerEmail,
+    })
+
+    if (!userWishlistCheck) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "You have to add the book to the wishlist first!!!"
+      )
+    }
+
+    // Remove user from wishlist
+    await BookModel.updateOne(
+      { _id: bookId },
+      { $pull: { wishlist: { reader_email: readerEmail } } }
+    )
+
+    // Update user's reading status by pushing a new entry
+    await BookModel.updateOne(
+      { _id: book._id },
+      {
+        $push: {
+          reading_status: { reader_email: readerEmail, status: status },
+        },
+      }
+    )
+  }
 
   return book
 }
