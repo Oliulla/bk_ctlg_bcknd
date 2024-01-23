@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import dotenv from "dotenv";
-import path from "path";
+import dotenv from "dotenv"
+import path from "path"
 
-dotenv.config({ path: path.join(process.cwd(), ".env") });
+dotenv.config({ path: path.join(process.cwd(), ".env") })
 
 export default {
   env: process.env.NODE_ENV,
@@ -15,4 +15,5 @@ export default {
     expires_in: process.env.JWT_EXPIRES_IN,
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   },
-};
+  live_url: process.env.API_USE_URL as string,
+}

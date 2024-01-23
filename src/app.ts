@@ -5,11 +5,12 @@ import cookieParser from "cookie-parser"
 
 import routes from "./app/routes"
 import httpStatus from "http-status"
+import config from "./config"
 const app: Application = express()
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", config.live_url],
     credentials: true,
   })
 )
