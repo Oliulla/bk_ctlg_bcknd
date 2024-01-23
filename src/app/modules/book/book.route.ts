@@ -15,6 +15,12 @@ router.post(
   bookController.pushReaderInWishlist
 )
 
+// Change user reading status
+router.post(
+  "/wishlist/status/:bookId&:readerEmail",
+  bookController.changeBookStatus
+)
+
 // Get all books
 router.get("/get-all-books", bookController.getAllBooks)
 

@@ -1,9 +1,9 @@
 import { Document } from "mongoose"
 
 export enum Status {
-  CURRENTLY_READING = "currently_reading",
-  PLAN_TO_READ_SOON = "plan_to_read_soon",
-  FINISHED_READING = "finished_reading",
+  CURRENTLY_READING = "Currentlyre Rading",
+  PLAN_TO_READ_SOON = "Plan To Read Soon",
+  FINISHED_READING = "Finished Reading",
 }
 
 export type Review = {
@@ -13,7 +13,10 @@ export type Review = {
 
 export type ReadingStatus = {
   reader_email: string
-  status: Status
+  status:
+    | Status.CURRENTLY_READING
+    | Status.PLAN_TO_READ_SOON
+    | Status.FINISHED_READING
 }
 
 export type WishlistReader = {

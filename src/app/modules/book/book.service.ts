@@ -43,6 +43,7 @@ const pushReaderInWishlist = async (bookId: string, readerEmail: string) => {
   }
 
   const userWishlistCheck = await BookModel.find({
+    _id: bookId,
     "wishlist.reader_email": { $eq: readerEmail },
   })
 
@@ -55,6 +56,19 @@ const pushReaderInWishlist = async (bookId: string, readerEmail: string) => {
     )
   }
 
+  // Check if the user has already added the book with the any status
+  const userStatusCheck = await BookModel.findOne({
+    _id: bookId,
+    "reading_status.reader_email": readerEmail,
+  })
+
+  if (userStatusCheck) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You already added this status. So, you can't add this to wishlist!!!"
+    )
+  }
+
   // Book not found, so let's add it to the wishlist
   await BookModel.updateOne(
     { _id: book._id },
@@ -62,6 +76,63 @@ const pushReaderInWishlist = async (bookId: string, readerEmail: string) => {
   )
 
   // console.log(updatedBook)
+  return book
+}
+
+const changeBookStatus = async (
+  bookId: string,
+  readerEmail: string,
+  status: string
+) => {
+  const book = await BookModel.findById(bookId)
+
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Book not found with the given ID")
+  }
+
+  // Check if the user has already added the book with the requested status
+  const userStatusCheck = await BookModel.findOne({
+    _id: bookId,
+    "reading_status.reader_email": readerEmail,
+    "reading_status.status": status,
+  })
+
+  if (userStatusCheck) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You already added this status!!!"
+    )
+  }
+
+  // Check if the user has added the book to the wishlist
+  const userWishlistCheck = await BookModel.findOne({
+    _id: bookId,
+    "wishlist.reader_email": readerEmail,
+  })
+
+  if (!userWishlistCheck) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You have to add the book to the wishlist first!!!"
+    )
+  }
+
+  // Remove user from wishlist
+  await BookModel.updateOne(
+    { _id: bookId },
+    { $pull: { wishlist: { reader_email: readerEmail } } }
+  )
+
+  // Update user's reading status
+  await BookModel.updateOne(
+    { _id: book._id },
+    {
+      $push: {
+        reading_status: { reader_email: readerEmail, status: status },
+      },
+    }
+  )
+
   return book
 }
 
@@ -148,6 +219,7 @@ export const bookService = {
   createBook,
   insertReview,
   pushReaderInWishlist,
+  changeBookStatus,
 
   getAllBooks,
   getBookById,
