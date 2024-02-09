@@ -10,7 +10,7 @@ const app: Application = express()
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", config.live_url],
+    origin: ["http://localhost:3000", "https://book-ctlg-frntend.vercel.app"],
     credentials: true,
   })
 )

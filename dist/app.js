@@ -9,10 +9,9 @@ const globalErrorHandler_1 = __importDefault(require("./app/middlewares/globalEr
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = __importDefault(require("./app/routes"));
 const http_status_1 = __importDefault(require("http-status"));
-const config_1 = __importDefault(require("./config"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000", config_1.default.live_url],
+    origin: ["http://localhost:3000", "https://book-ctlg-frntend.vercel.app"],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());
